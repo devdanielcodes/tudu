@@ -5,5 +5,9 @@ export default createStore({
     state:{},
     getters:{},
     mutations:{},
-    actions:{},
+    actions:{
+        createAccount({state}, credents){
+            
+        }
+    },
 })
