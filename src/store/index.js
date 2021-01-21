@@ -13,7 +13,7 @@ export default createStore({
     actions:{
         createAccount( {state},payload){
             state.newUser = payload
-            axios.post('/register',null, {
+            axios.post('https://todoapp.pharmacopedia.store/register',null, {
                 params: payload
             })
             .then(res => {
@@ -24,7 +24,7 @@ export default createStore({
             })
         },
         loginUser({state}, payload){
-            axios.post('/login',null, {
+            axios.post('https://todoapp.pharmacopedia.store/login',null, {
                 params: payload
             })
             .then(res => {

@@ -4,7 +4,7 @@ import { router } from './router'
 import store from './store'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://todoapp.pharmacopedia.store'
+axios.defaults.baseURL = undefined
 
 
 const app = createApp(App)
