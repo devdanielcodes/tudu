@@ -36,7 +36,7 @@ export default {
     });
     const login = () => {
       store.dispatch("loginUser", form.value);
-      location.reload();
+      setTimeout;
     };
 
     return { login, form };

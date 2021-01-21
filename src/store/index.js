@@ -31,6 +31,7 @@ export default createStore({
                 state.token = res.data.api_token 
                 console.log(state.token)
                 localStorage.setItem('token', state.token)
+                location.reload()
 
                 
             })
