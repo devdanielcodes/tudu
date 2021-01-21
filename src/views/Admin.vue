@@ -3,12 +3,20 @@
     <img class="bg" src="../assets/admin-bg.svg" alt="" srcset="" />
     <main>
       <h1>Welcome to your admin</h1>
+      <button @click="logout">Logout</button>
     </main>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      location.reload();
+    },
+  },
+};
 </script>
 
 <style scoped>

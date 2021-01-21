@@ -6,17 +6,20 @@
         <img src="../assets/logo.svg" alt="" srcset="" />
       </div>
       <p>Manage activities easy</p>
-      <form @submit.prevent>
+      <form @submit.prevent="create">
         <h2>Create an account</h2>
 
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" />
+        <label for="lastname">Last name</label>
+        <input type="text" name="lastname" id="lastname" v-model="form.lastName" />
+
+        <label for="firstname">First name</label>
+        <input type="text" name="firstname" id="firstname" v-model="form.firstName" />
 
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
+        <input type="email" name="email" id="email" v-model="form.email" />
 
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" v-model="form.password" />
 
         <button>Create <img src="../assets/b-arrow.svg" alt="" /></button>
         <router-link :to="{ name: 'Login' }">Login to your account</router-link>
@@ -26,7 +29,23 @@
 </template>
 
 <script>
-export default {};
+import { ref } from "vue";
+import store from "../store";
+export default {
+  setup() {
+    const form = ref({
+      lastName: "",
+      firstName: "",
+      email: "",
+      password: "",
+    });
+    const create = () => {
+      store.dispatch("createAccount", form.value);
+    };
+
+    return { create, form };
+  },
+};
 </script>
 
 <style scoped>

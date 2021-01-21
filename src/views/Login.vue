@@ -6,17 +6,17 @@
         <img src="../assets/logo.svg" alt="" srcset="" />
       </div>
       <p>Manage activities easy</p>
-      <form @submit.prevent>
+      <form @submit.prevent="login">
         <h2>
           Login to your<br />
           account
         </h2>
 
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
+        <input type="email" name="email" id="email" v-model="form.email" />
 
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" v-model="form.password" />
 
         <button>Login <img src="../assets/b-arrow.svg" alt="" /></button>
         <router-link :to="{ name: 'Signup' }">Create an account</router-link>
@@ -26,7 +26,22 @@
 </template>
 
 <script>
-export default {};
+import { ref } from "vue";
+import store from "../store";
+export default {
+  setup() {
+    const form = ref({
+      email: "",
+      password: "",
+    });
+    const login = () => {
+      store.dispatch("loginUser", form.value);
+      location.reload();
+    };
+
+    return { login, form };
+  },
+};
 </script>
 
 <style scoped>

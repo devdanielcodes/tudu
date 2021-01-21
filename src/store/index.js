@@ -1,13 +1,42 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
 
 
 export default createStore({
-    state:{},
+    namespaced: true,
+    state:{
+        newUser: null,
+        token: null
+    },
     getters:{},
     mutations:{},
     actions:{
-        createAccount({state}, credents){
-            
+        createAccount( {state},payload){
+            state.newUser = payload
+            axios.post('/register',null, {
+                params: payload
+            })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+        loginUser({state}, payload){
+            axios.post('/login',null, {
+                params: payload
+            })
+            .then(res => {
+                state.token = res.data.api_token 
+                console.log(state.token)
+                localStorage.setItem('token', state.token)
+
+                
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     },
 })
