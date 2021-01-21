@@ -41,6 +41,10 @@ export default {
     });
     const create = () => {
       store.dispatch("createAccount", form.value);
+      store.dispatch("loginUser", {
+        email: form.value.email,
+        password: form.value.password,
+      });
     };
 
     return { create, form };
