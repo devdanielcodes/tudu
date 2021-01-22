@@ -45,7 +45,7 @@ export default createStore({
                 params: payload
             })
             .then(res => {
-                /* location.reload() */
+                location.reload()
                 return dispatch('attempt', res.data.api_token)
 
                 
