@@ -9,11 +9,16 @@
       <form @submit.prevent="create">
         <h2>Create an account</h2>
 
-        <label for="lastname">Last name</label>
-        <input type="text" name="lastname" id="lastname" v-model="form.lastName" />
-
-        <label for="firstname">First name</label>
-        <input type="text" name="firstname" id="firstname" v-model="form.firstName" />
+        <div class="names">
+          <div class="first">
+            <label for="lastname">Last name</label>
+            <input type="text" name="lastname" id="lastname" v-model="form.lastName" />
+          </div>
+          <div class="last">
+            <label for="firstname">First name</label>
+            <input type="text" name="firstname" id="firstname" v-model="form.firstName" />
+          </div>
+        </div>
 
         <label for="email">Email</label>
         <input type="email" name="email" id="email" v-model="form.email" />
@@ -25,6 +30,7 @@
         <router-link :to="{ name: 'Login' }">Login to your account</router-link>
       </form>
     </main>
+    <img src="../assets/warn.svg" class="warn" :class="{ close: close }" alt="" />
   </div>
 </template>
 
@@ -33,6 +39,7 @@ import { ref } from "vue";
 import store from "../store";
 export default {
   setup() {
+    const close = ref(false);
     const form = ref({
       lastName: "",
       firstName: "",
@@ -40,14 +47,26 @@ export default {
       password: "",
     });
     const create = () => {
-      store.dispatch("createAccount", form.value);
-      store.dispatch("loginUser", {
-        email: form.value.email,
-        password: form.value.password,
-      });
+      if (
+        form.value.lastName == "" ||
+        form.value.firstName == "" ||
+        form.value.email == "" ||
+        form.value.password == ""
+      ) {
+        close.value = true;
+        setTimeout(() => {
+          close.value = false;
+        }, 2000);
+      } else {
+        store.dispatch("createAccount", form.value);
+        store.dispatch("loginUser", {
+          email: form.value.email,
+          password: form.value.password,
+        });
+      }
     };
 
-    return { create, form };
+    return { create, form, close };
   },
 };
 </script>
@@ -83,6 +102,12 @@ form h2 {
   margin-bottom: 25px;
   text-align: center;
 }
+.names {
+  display: flex;
+}
+.names .first {
+  margin-right: 10px;
+}
 form input {
   width: 100%;
   padding: 14px;
@@ -105,10 +130,22 @@ form button {
   border: none;
   margin-bottom: 15px;
   cursor: pointer;
+  outline: none;
 }
 form a {
   color: white;
   margin-bottom: 10px;
+}
+.warn {
+  pointer-events: none;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.close {
+  opacity: 1;
 }
 @media (max-width: 470px) {
   main {

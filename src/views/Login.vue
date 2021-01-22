@@ -22,6 +22,13 @@
         <router-link :to="{ name: 'Signup' }">Create an account</router-link>
       </form>
     </main>
+    <img src="../assets/warn.svg" class="warn" :class="{ close: close }" alt="" />
+    <img
+      src="../assets/incorrect.svg"
+      class="warn"
+      :class="{ close: incorrect }"
+      alt=""
+    />
   </div>
 </template>
 
@@ -30,16 +37,33 @@ import { ref } from "vue";
 import store from "../store";
 export default {
   setup() {
+    const close = ref(false);
+    const incorrect = ref(false);
     const form = ref({
       email: "",
       password: "",
     });
     const login = () => {
-      store.dispatch("loginUser", form.value);
-      setTimeout;
+      if (form.value.email == "" || form.value.password == "") {
+        close.value = true;
+        setTimeout(() => {
+          close.value = false;
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          if (store.state.msg == "Request failed with status code 422") {
+            incorrect.value = true;
+            setTimeout(() => {
+              incorrect.value = false;
+            }, 2000);
+          }
+        }, 4000);
+        incorrect.value = false;
+        store.dispatch("loginUser", form.value);
+      }
     };
 
-    return { login, form };
+    return { login, form, close, incorrect };
   },
 };
 </script>
@@ -75,6 +99,17 @@ form h2 {
   margin-bottom: 25px;
   text-align: center;
 }
+.warn {
+  pointer-events: none;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0;
+  transition: all 0.3s;
+}
+.close {
+  opacity: 1;
+}
 form input {
   width: 100%;
   padding: 14px;
@@ -97,6 +132,7 @@ form button {
   border: none;
   margin-bottom: 15px;
   cursor: pointer;
+  outline: none;
 }
 form a {
   color: white;
